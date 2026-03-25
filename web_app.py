@@ -1,4 +1,4 @@
-"""量化选股软件Web界面 - 科技风格优化版"""
+"""量化选股软件Web界面 - 科技风格"""
 import sys
 import os
 import asyncio
@@ -111,44 +111,6 @@ st.markdown("""
         100% { background-position: 0% center; }
     }
 
-    /* 模式指示器 */
-    .mode-indicator {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .mode-badge {
-        padding: 0.5rem 1.5rem;
-        border-radius: 20px;
-        font-family: 'Orbitron', monospace;
-        font-size: 0.85rem;
-        font-weight: 600;
-        letter-spacing: 1px;
-        transition: all 0.3s ease;
-    }
-
-    .mode-badge.active-backtest {
-        background: linear-gradient(135deg, rgba(0, 245, 255, 0.2), rgba(0, 245, 255, 0.1));
-        color: #00f5ff;
-        border: 1px solid #00f5ff;
-        box-shadow: 0 0 20px rgba(0, 245, 255, 0.3);
-    }
-
-    .mode-badge.active-analysis {
-        background: linear-gradient(135deg, rgba(178, 75, 243, 0.2), rgba(178, 75, 243, 0.1));
-        color: #b24bf3;
-        border: 1px solid #b24bf3;
-        box-shadow: 0 0 20px rgba(178, 75, 243, 0.3);
-    }
-
-    .mode-badge.inactive {
-        background: rgba(30, 41, 59, 0.5);
-        color: #475569;
-        border: 1px solid #1e293b;
-    }
-
     .section-header {
         font-family: 'Orbitron', monospace;
         font-size: 1.2rem;
@@ -252,19 +214,39 @@ st.markdown("""
         box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
     }
 
-    /* 模式选择器样式 */
-    .mode-selector-container {
-        margin: 0.5rem 0 1.5rem 0;
+    /* 标签页样式 */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        background: transparent;
+        justify-content: center;
     }
 
-    .mode-selector-container > div > div {
-        background: linear-gradient(145deg, #111827, #0f172a) !important;
-        border: 1px solid #1e293b !important;
-        border-radius: 10px !important;
+    .stTabs [data-baseweb="tab"] {
+        font-family: 'Orbitron', monospace;
+        font-size: 0.95rem;
+        font-weight: 600;
+        padding: 12px 32px;
+        background: linear-gradient(145deg, #111827, #0f172a);
+        border: 1px solid #1e293b;
+        border-radius: 10px;
+        color: #64748b;
+        transition: all 0.3s ease;
     }
 
-    .mode-selector-container > div > div:hover {
+    .stTabs [data-baseweb="tab"]:hover {
+        color: #00f5ff;
+        border-color: #00f5ff;
+    }
+
+    .stTabs [aria-selected="true"] {
+        background: linear-gradient(145deg, #0f172a, #111827) !important;
+        color: #00f5ff !important;
         border-color: #00f5ff !important;
+        box-shadow: 0 0 25px rgba(0, 245, 255, 0.2);
+    }
+
+    .stTabs [data-baseweb="tab-highlight"] {
+        display: none;
     }
 
     .stButton button {
@@ -493,41 +475,6 @@ st.markdown("""
         text-shadow: 0 0 10px currentColor;
     }
 
-    /* 内部标签页 */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 6px;
-        background: transparent;
-    }
-
-    .stTabs [data-baseweb="tab"] {
-        font-family: 'Rajdhani', sans-serif;
-        font-size: 0.85rem;
-        font-weight: 500;
-        padding: 8px 16px;
-        background: linear-gradient(145deg, #111827, #0f172a);
-        border: 1px solid #1e293b;
-        border-radius: 6px 6px 0 0;
-        color: #64748b;
-        transition: all 0.3s ease;
-    }
-
-    .stTabs [data-baseweb="tab"]:hover {
-        color: #00f5ff;
-        border-color: #00f5ff;
-    }
-
-    .stTabs [aria-selected="true"] {
-        background: linear-gradient(145deg, #0f172a, #111827) !important;
-        color: #00f5ff !important;
-        border-color: #00f5ff !important;
-        border-bottom: 2px solid #00f5ff !important;
-    }
-
-    .stTabs [data-baseweb="tab-highlight"] {
-        display: none;
-    }
-
-    /* 欢迎页面 */
     .welcome-container {
         text-align: center;
         padding: 2rem;
@@ -582,26 +529,16 @@ st.markdown("""
 st.markdown('<h1 class="main-title">QUANTSTOCK PRO</h1>', unsafe_allow_html=True)
 st.markdown('<p class="sub-title">AI-Powered Quantitative Trading Platform</p>', unsafe_allow_html=True)
 
-# ========== 模式选择器（主内容区，始终可见） ==========
-st.markdown('<div class="mode-selector-container">', unsafe_allow_html=True)
-col1, col2, col3 = st.columns([1, 2, 1])
-with col2:
-    current_mode = st.selectbox(
-        "SELECT MODE",
-        options=["⚡ Strategy Backtest", "🤖 AI Analysis"],
-        index=0,
-        key="mode_selector",
-        label_visibility="collapsed"
-    )
-st.markdown('</div>', unsafe_allow_html=True)
+# 创建标签页
+tab1, tab2 = st.tabs(["⚡ STRATEGY BACKTEST", "🤖 AI ANALYSIS"])
 
-# ========== 侧边栏配置 ==========
-with st.sidebar:
-    st.markdown("## ⚙️ CONTROL PANEL")
-    st.markdown("---")
 
-    # 根据模式显示不同配置
-    if current_mode == "⚡ Strategy Backtest":
+# ========== 标签页1: 策略回测 ==========
+with tab1:
+    with st.sidebar:
+        st.markdown("## ⚙️ BACKTEST CONFIG")
+        st.markdown("---")
+
         st.markdown("### 📊 DATA INPUT")
         st.markdown("<small style='color:#64748b'>A股: 600519 | 港股: 00700 | 美股: AAPL</small>", unsafe_allow_html=True)
 
@@ -613,7 +550,6 @@ with st.sidebar:
             label_visibility="collapsed"
         )
 
-        # 解析股票代码
         symbols = []
         for line in symbols_input.split('\n'):
             line = line.strip()
@@ -637,7 +573,6 @@ with st.sidebar:
             index=0, key="backtest_strategy", label_visibility="collapsed"
         )
 
-        # 策略参数
         if strategy_type == "动量策略":
             lookback = st.slider("Lookback Period", 5, 250, 20, key="bt_lookback")
             holding = st.slider("Holding Period", 1, 60, 10, key="bt_holding")
@@ -674,43 +609,12 @@ with st.sidebar:
         st.markdown("---")
         run_backtest = st.button("🚀 EXECUTE BACKTEST", type="primary", use_container_width=True, key="btn_backtest")
 
-    else:  # AI Analysis
-        st.markdown("### 📊 STOCKS TO ANALYZE")
-        analyze_symbols = st.text_input("Stock Codes (comma separated)", value="600519,000858,000333", key="analyze_symbols", label_visibility="collapsed")
-        analyze_stocks = [s.strip() for s in analyze_symbols.split(',') if s.strip()]
-
-        st.markdown("### 📅 DATE RANGE")
-        col1, col2 = st.columns(2)
-        with col1:
-            analyze_start = st.date_input("Start", value=datetime.now() - timedelta(days=180), key="analyze_start")
-        with col2:
-            analyze_end = st.date_input("End", value=datetime.now(), key="analyze_end")
-
-        st.markdown("### 🔧 ANALYSIS OPTIONS")
-        enable_search = st.checkbox("Web Search Enhancement", value=True, key="analyze_search")
-        enable_chip = st.checkbox("Chip Distribution Data", value=True, key="analyze_chip")
-        enable_realtime = st.checkbox("Real-time Quotes", value=True, key="analyze_realtime")
-
-        st.markdown("### 📬 NOTIFICATIONS")
-        enable_notify = st.checkbox("Send Notifications", value=False, key="analyze_notify")
-        if enable_notify:
-            notify_channels = st.multiselect("Channels", options=["email", "wechat"], default=["email"], key="analyze_channels", label_visibility="collapsed")
-
-        st.markdown("---")
-        run_analyze = st.button("🤖 START AI ANALYSIS", type="primary", use_container_width=True, key="btn_analyze")
-
-
-# ========== 主内容区 ==========
-# 从 selectbox 获取当前模式
-current_mode = st.session_state.mode_selector
-
-if current_mode == "⚡ Strategy Backtest":
+    # 回测主逻辑
     if run_backtest and symbols:
         try:
             progress_bar = st.progress(0)
             status_text = st.empty()
 
-            # 获取数据
             status_text.markdown("<p style='color:#00f5ff'>📥 Fetching market data...</p>", unsafe_allow_html=True)
             fetcher = DataFetcher(cache_enabled=True)
 
@@ -734,7 +638,6 @@ if current_mode == "⚡ Strategy Backtest":
                 st.error("No data retrieved")
                 st.stop()
 
-            # 计算因子
             status_text.markdown("<p style='color:#00f5ff'>🔢 Computing factors...</p>", unsafe_allow_html=True)
             calculator = FactorCalculator()
             factor_data = {}
@@ -749,7 +652,6 @@ if current_mode == "⚡ Strategy Backtest":
                         st.error(f"✗ {symbol}: {str(e)}")
                 progress_bar.progress(0.3 + (i + 1) / len(stock_data) * 0.2)
 
-            # 创建策略
             status_text.markdown("<p style='color:#00f5ff'>🎯 Building strategy...</p>", unsafe_allow_html=True)
             if strategy_type == "动量策略":
                 strategy = MomentumStrategy(lookback_period=lookback, holding_period=holding, top_n=top_n)
@@ -767,7 +669,6 @@ if current_mode == "⚡ Strategy Backtest":
 
             progress_bar.progress(0.6)
 
-            # 准备回测数据
             if strategy_type in ["动量策略", "双动量策略"]:
                 backtest_data = pd.DataFrame({s: d['Close'] for s, d in stock_data.items()})
                 mode_bt = BacktestMode.MULTI_STOCK
@@ -778,7 +679,6 @@ if current_mode == "⚡ Strategy Backtest":
 
             progress_bar.progress(0.7)
 
-            # 运行回测
             status_text.markdown("<p style='color:#00f5ff'>⚡ Running backtest...</p>", unsafe_allow_html=True)
             backtester = Backtester(strategy=strategy, initial_capital=initial_capital, commission_rate=commission_rate, slippage_rate=slippage_rate)
             result = backtester.run(data=backtest_data, start_date=start_date.strftime("%Y-%m-%d"), end_date=end_date.strftime("%Y-%m-%d"), mode=mode_bt)
@@ -827,7 +727,6 @@ if current_mode == "⚡ Strategy Backtest":
                 </div>
                 """, unsafe_allow_html=True)
 
-            # 详细指标
             st.markdown('<h3 class="section-header">📈 DETAILED METRICS</h3>', unsafe_allow_html=True)
 
             metrics_data = [
@@ -844,7 +743,6 @@ if current_mode == "⚡ Strategy Backtest":
             metrics_df = pd.DataFrame(metrics_data, columns=["METRIC", "VALUE"])
             st.dataframe(metrics_df, use_container_width=True, hide_index=True)
 
-            # 图表
             st.markdown('<h3 class="section-header">📊 VISUALIZATION</h3>', unsafe_allow_html=True)
             plotter = Plotter()
 
@@ -896,13 +794,43 @@ if current_mode == "⚡ Strategy Backtest":
         """, unsafe_allow_html=True)
 
 
-else:  # AI Analysis
+# ========== 标签页2: AI智能分析 ==========
+with tab2:
+    with st.sidebar:
+        st.markdown("## 🤖 AI CONFIG")
+        st.markdown("---")
+
+        st.markdown("### 📊 STOCKS TO ANALYZE")
+        analyze_symbols = st.text_input("Stock Codes (comma separated)", value="600519,000858,000333", key="analyze_symbols", label_visibility="collapsed")
+        analyze_stocks = [s.strip() for s in analyze_symbols.split(',') if s.strip()]
+
+        st.markdown("### 📅 DATE RANGE")
+        col1, col2 = st.columns(2)
+        with col1:
+            analyze_start = st.date_input("Start", value=datetime.now() - timedelta(days=180), key="analyze_start")
+        with col2:
+            analyze_end = st.date_input("End", value=datetime.now(), key="analyze_end")
+
+        st.markdown("### 🔧 ANALYSIS OPTIONS")
+        enable_search = st.checkbox("Web Search Enhancement", value=True, key="analyze_search")
+        enable_chip = st.checkbox("Chip Distribution Data", value=True, key="analyze_chip")
+        enable_realtime = st.checkbox("Real-time Quotes", value=True, key="analyze_realtime")
+
+        st.markdown("### 📬 NOTIFICATIONS")
+        enable_notify = st.checkbox("Send Notifications", value=False, key="analyze_notify")
+        if enable_notify:
+            notify_channels = st.multiselect("Channels", options=["email", "wechat"], default=["email"], key="analyze_channels", label_visibility="collapsed")
+        else:
+            notify_channels = ["email"]
+
+        st.markdown("---")
+        run_analyze = st.button("🤖 START AI ANALYSIS", type="primary", use_container_width=True, key="btn_analyze")
+
     if run_analyze and analyze_stocks:
         try:
             progress_bar = st.progress(0)
             status_text = st.empty()
 
-            # 初始化组件
             status_text.markdown("<p style='color:#b24bf3'>🔧 Initializing AI engine...</p>", unsafe_allow_html=True)
             data_fetcher = EnhancedDataFetcher()
             search_manager = SearchAPIManager() if enable_search else None
@@ -928,7 +856,6 @@ else:  # AI Analysis
                         include_institutional=False
                     )
 
-                # 显示基本信息
                 if stock_data.realtime:
                     rt = stock_data.realtime
                     change_class = "positive" if rt.change_pct > 0 else "negative"
@@ -968,7 +895,6 @@ else:  # AI Analysis
                     st.markdown(f"<div class='metric-card'><span class='metric-value'>{symbol}</span></div>", unsafe_allow_html=True)
                     stock_name = symbol
 
-                # 搜索增强
                 search_info = None
                 if search_manager and enable_search:
                     status_text.markdown(f"<p style='color:#b24bf3'>🔍 Searching {symbol} info...</p>", unsafe_allow_html=True)
@@ -982,14 +908,12 @@ else:  # AI Analysis
 
                 progress_bar.progress(0.3 + (i / len(analyze_stocks)) * 0.3)
 
-                # LLM分析
                 status_text.markdown(f"<p style='color:#b24bf3'>🤖 AI analyzing {symbol}...</p>", unsafe_allow_html=True)
                 with st.spinner("Running AI analysis..."):
                     analysis = asyncio.run(llm_analyzer.analyze_stock(stock_data=stock_data, search_info=search_info, stock_name=stock_name))
 
                 progress_bar.progress(0.6 + (i / len(analyze_stocks)) * 0.3)
 
-                # 显示分析结果
                 rating_class = {
                     "强烈推荐": "rating-strong-buy",
                     "推荐": "rating-buy",
@@ -1008,7 +932,6 @@ else:  # AI Analysis
                     if analysis.stop_loss:
                         st.metric("STOP LOSS", f"¥{analysis.stop_loss:.2f}")
 
-                # 详细分析标签
                 tab_a, tab_b, tab_c, tab_d = st.tabs(["📊 Fundamental", "📈 Technical", "🎯 Chip", "💡 Advice"])
 
                 with tab_a:
@@ -1057,7 +980,6 @@ else:  # AI Analysis
             progress_bar.empty()
             status_text.empty()
 
-            # 汇总
             if len(analyses_results) > 1:
                 st.markdown('<h2 class="section-header purple">📊 ANALYSIS SUMMARY</h2>', unsafe_allow_html=True)
 
@@ -1118,7 +1040,7 @@ else:  # AI Analysis
 # 页脚
 st.markdown("""
 <div class="footer">
-    <p class="version">QUANTSTOCK PRO v2.1</p>
+    <p class="version">QUANTSTOCK PRO v2.2</p>
     <p>Strategy Backtest • AI Analysis • Real-time Data</p>
     <p style="font-size: 0.75rem;">⚠️ For educational purposes only. Not financial advice.</p>
 </div>
