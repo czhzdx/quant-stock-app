@@ -173,3 +173,68 @@ api:
   host: "0.0.0.0"
   port: 8000
   auth_required: true
+
+# 股票分析模块配置
+stock_analysis:
+  # 股票输入源配置
+  stocks:
+    default_list: []              # 默认股票列表
+
+  # 数据获取配置
+  data_fetching:
+    historical:
+      primary: "akshare"
+      fallback: ["efinance"]
+      cache_ttl_days: 7
+    real_time:
+      enabled: true
+      sources: ["akshare", "efinance"]
+    chip_data:
+      enabled: true
+      sources: ["akshare"]
+
+  # 搜索增强API (全部集成+降级)
+  search_apis:
+    primary: "tavily"
+    fallback: ["serpapi", "bocha"]
+    tavily:
+      api_key: "${TAVILY_API_KEY}"
+    serpapi:
+      api_key: "${SERPAPI_KEY}"
+    bocha:
+      api_key: "${BOCHA_API_KEY}"
+
+  # LLM配置 (OpenAI为主)
+  llm:
+    primary: "openai"
+    fallback: ["anthropic", "deepseek"]
+    openai:
+      api_key: "${OPENAI_API_KEY}"
+      model: "gpt-4o"
+    anthropic:
+      api_key: "${ANTHROPIC_API_KEY}"
+      model: "claude-sonnet-4-6"
+    deepseek:
+      api_key: "${DEEPSEEK_API_KEY}"
+      model: "deepseek-chat"
+
+  # 报告配置
+  reports:
+    output_dir: "output/reports"
+    formats: ["markdown", "json"]
+    include_charts: true
+
+  # 通知配置 (邮件+微信)
+  notifications:
+    channels: ["email", "wechat"]
+    email:
+      enabled: true
+      smtp_server: "${SMTP_SERVER}"
+      smtp_port: 587
+      sender: "${EMAIL_SENDER}"
+      password: "${EMAIL_PASSWORD}"
+      recipients: []
+    wechat:
+      enabled: true
+      webhook_url: "${WECHAT_WEBHOOK}"
+      serverchan_key: "${SERVERCHAN_KEY}"
