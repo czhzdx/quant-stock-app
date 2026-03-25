@@ -252,35 +252,19 @@ st.markdown("""
         box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
     }
 
-    /* Radio按钮样式优化 */
-    section[data-testid="stSidebar"] .stRadio > label {
-        font-family: 'Orbitron', monospace;
-        color: #00f5ff;
-        font-size: 0.85rem;
-        letter-spacing: 2px;
+    /* 模式选择器样式 */
+    .mode-selector-container {
+        margin: 0.5rem 0 1.5rem 0;
     }
 
-    section[data-testid="stSidebar"] .stRadio div[role="radiogroup"] {
-        gap: 0.5rem;
+    .mode-selector-container > div > div {
+        background: linear-gradient(145deg, #111827, #0f172a) !important;
+        border: 1px solid #1e293b !important;
+        border-radius: 10px !important;
     }
 
-    section[data-testid="stSidebar"] .stRadio div[role="radiogroup"] label {
-        background: linear-gradient(145deg, #111827, #0f172a);
-        border: 1px solid #1e293b;
-        border-radius: 8px;
-        padding: 0.6rem 1rem;
-        font-family: 'Rajdhani', sans-serif;
-        font-weight: 500;
-        transition: all 0.3s ease;
-    }
-
-    section[data-testid="stSidebar"] .stRadio div[role="radiogroup"] label:hover {
-        border-color: #00f5ff;
-    }
-
-    section[data-testid="stSidebar"] .stRadio div[role="radiogroup"] label[data-checked="true"] {
-        border-color: #00f5ff;
-        background: rgba(0, 245, 255, 0.1);
+    .mode-selector-container > div > div:hover {
+        border-color: #00f5ff !important;
     }
 
     .stButton button {
@@ -602,21 +586,26 @@ st.markdown('<p class="sub-title">AI-Powered Quantitative Trading Platform</p>',
 if "app_mode" not in st.session_state:
     st.session_state.app_mode = "⚡ Strategy Backtest"
 
-# ========== 侧边栏配置 ==========
-with st.sidebar:
-    st.markdown("## ⚙️ CONTROL PANEL")
+# ========== 模式选择器（主内容区，始终可见） ==========
+def on_mode_change():
+    st.session_state.app_mode = st.session_state.mode_selector
 
-    # 功能模式选择 - 使用Radio更清晰
-    selected_mode = st.radio(
+st.markdown('<div class="mode-selector-container">', unsafe_allow_html=True)
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    st.selectbox(
         "SELECT MODE",
         options=["⚡ Strategy Backtest", "🤖 AI Analysis"],
         index=0 if st.session_state.app_mode == "⚡ Strategy Backtest" else 1,
-        key="app_mode_radio",
+        key="mode_selector",
+        on_change=on_mode_change,
         label_visibility="collapsed"
     )
-    # 同步到session_state
-    st.session_state.app_mode = selected_mode
+st.markdown('</div>', unsafe_allow_html=True)
 
+# ========== 侧边栏配置 ==========
+with st.sidebar:
+    st.markdown("## ⚙️ CONTROL PANEL")
     st.markdown("---")
 
     # 根据模式显示不同配置
@@ -719,17 +708,9 @@ with st.sidebar:
         run_analyze = st.button("🤖 START AI ANALYSIS", type="primary", use_container_width=True, key="btn_analyze")
 
 
-# ========== 模式指示器 ==========
-current_mode = st.session_state.app_mode
-st.markdown(f"""
-<div class="mode-indicator">
-    <span class="mode-badge {'active-backtest' if current_mode == '⚡ Strategy Backtest' else 'inactive'}">⚡ BACKTEST</span>
-    <span class="mode-badge {'active-analysis' if current_mode == '🤖 AI Analysis' else 'inactive'}">🤖 AI ANALYSIS</span>
-</div>
-""", unsafe_allow_html=True)
-
-
 # ========== 主内容区 ==========
+current_mode = st.session_state.app_mode
+
 if current_mode == "⚡ Strategy Backtest":
     if run_backtest and symbols:
         try:
