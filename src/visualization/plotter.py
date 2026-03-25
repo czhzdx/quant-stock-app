@@ -11,8 +11,8 @@ from datetime import datetime
 import warnings
 warnings.filterwarnings('ignore')
 
-from ..backtest.backtester import BacktestResult
-from ..utils.config_loader import get_config
+from src.backtest.backtester import BacktestResult
+from src.utils.config_loader import get_config
 
 logger = logging.getLogger(__name__)
 

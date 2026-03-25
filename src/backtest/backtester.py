@@ -9,8 +9,8 @@ from enum import Enum
 import warnings
 warnings.filterwarnings('ignore')
 
-from ..strategies.base import BaseStrategy, SignalType
-from ..utils.config_loader import get_config
+from src.strategies.base import BaseStrategy, SignalType
+from src.utils.config_loader import get_config
 
 logger = logging.getLogger(__name__)
 
@@ -615,7 +615,7 @@ def test_backtester():
         }, index=dates)
 
     print("测试单只股票回测...")
-    from ..strategies.momentum import MomentumStrategy
+    from src.strategies.momentum import MomentumStrategy
 
     strategy = MomentumStrategy(lookback_period=10, holding_period=5, top_n=1)
     backtester = Backtester(strategy, initial_capital=1000000)

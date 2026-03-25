@@ -7,7 +7,7 @@ import logging
 from typing import List, Dict, Optional, Union
 from pathlib import Path
 import hashlib
-from ..utils.config_loader import get_config
+from src.utils.config_loader import get_config
 
 logger = logging.getLogger(__name__)
 

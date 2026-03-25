@@ -6,7 +6,7 @@ import logging
 from dataclasses import dataclass
 from enum import Enum
 import talib
-from ..utils.config_loader import get_config
+from src.utils.config_loader import get_config
 
 logger = logging.getLogger(__name__)
 
