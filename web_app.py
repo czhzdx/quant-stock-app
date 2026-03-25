@@ -91,45 +91,13 @@ st.markdown("""
         text-align: center;
         letter-spacing: 6px;
         text-transform: uppercase;
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
     }
 
     @keyframes gradient {
         0% { background-position: 0% center; }
         50% { background-position: 100% center; }
         100% { background-position: 0% center; }
-    }
-
-    .mode-tabs {
-        display: flex;
-        justify-content: center;
-        gap: 0.5rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .mode-tab {
-        font-family: 'Orbitron', monospace;
-        font-size: 0.95rem;
-        font-weight: 600;
-        padding: 12px 32px;
-        background: linear-gradient(145deg, #111827, #0f172a);
-        border: 1px solid #1e293b;
-        border-radius: 10px;
-        color: #64748b;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-decoration: none;
-    }
-
-    .mode-tab:hover {
-        color: #00f5ff;
-        border-color: #00f5ff;
-    }
-
-    .mode-tab.active {
-        color: #00f5ff !important;
-        border-color: #00f5ff !important;
-        box-shadow: 0 0 25px rgba(0, 245, 255, 0.2);
     }
 
     .section-header {
@@ -158,7 +126,6 @@ st.markdown("""
         padding: 1rem;
         position: relative;
         overflow: hidden;
-        transition: all 0.3s ease;
     }
 
     .metric-card::before {
@@ -169,17 +136,11 @@ st.markdown("""
         background: linear-gradient(90deg, transparent, #00f5ff, transparent);
     }
 
-    .metric-card:hover {
-        border-color: #00f5ff;
-        box-shadow: 0 0 20px rgba(0, 245, 255, 0.15);
-    }
-
     .metric-label {
         font-family: 'Rajdhani', sans-serif;
         font-size: 0.8rem;
         color: #64748b;
         text-transform: uppercase;
-        letter-spacing: 1px;
     }
 
     .metric-value {
@@ -187,25 +148,49 @@ st.markdown("""
         font-size: 1.5rem;
         font-weight: 700;
         color: #f8fafc;
-        margin-top: 0.2rem;
     }
 
     .metric-value.positive { color: #10b981; }
     .metric-value.negative { color: #ef4444; }
 
     .rating-badge {
-        display: inline-block;
         padding: 0.4rem 1rem;
         border-radius: 20px;
         font-family: 'Orbitron', monospace;
         font-weight: 600;
         font-size: 0.9rem;
     }
-
     .rating-strong-buy { background: rgba(236, 72, 153, 0.2); color: #ec4899; border: 1px solid #ec4899; }
     .rating-buy { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid #10b981; }
     .rating-neutral { background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid #f59e0b; }
     .rating-sell { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid #ef4444; }
+
+    /* 标签页样式 */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        background: transparent;
+        justify-content: center;
+    }
+    .stTabs [data-baseweb="tab"] {
+        font-family: 'Orbitron', monospace;
+        font-size: 0.95rem;
+        font-weight: 600;
+        padding: 12px 32px;
+        background: linear-gradient(145deg, #111827, #0f172a);
+        border: 1px solid #1e293b;
+        border-radius: 10px;
+        color: #64748b;
+    }
+    .stTabs [data-baseweb="tab"]:hover {
+        color: #00f5ff;
+        border-color: #00f5ff;
+    }
+    .stTabs [aria-selected="true"] {
+        color: #00f5ff !important;
+        border-color: #00f5ff !important;
+        box-shadow: 0 0 25px rgba(0, 245, 255, 0.2);
+    }
+    .stTabs [data-baseweb="tab-highlight"] { display: none; }
 
     .stButton button {
         font-family: 'Orbitron', monospace;
@@ -214,9 +199,7 @@ st.markdown("""
         color: #0a0e17 !important;
         border: none !important;
         border-radius: 8px !important;
-        padding: 10px 20px !important;
     }
-
     .stButton button:hover {
         box-shadow: 0 0 30px rgba(0, 245, 255, 0.4) !important;
     }
@@ -227,7 +210,6 @@ st.markdown("""
         border-radius: 8px !important;
         color: #f8fafc !important;
     }
-
     .stTextInput label, .stTextArea label, .stSelectbox label, .stMultiSelect label {
         font-family: 'Rajdhani', sans-serif;
         color: #94a3b8 !important;
@@ -240,8 +222,7 @@ st.markdown("""
     .stDataFrame { border: 1px solid #1e293b; border-radius: 12px; overflow: hidden; }
     .stDataFrame table { background: #111827 !important; }
     .stDataFrame thead th { background: #0f172a !important; color: #00f5ff !important; font-family: 'Orbitron', monospace; }
-    .stDataFrame tbody td { color: #f8fafc !important; font-family: 'Rajdhani', sans-serif; }
-    .stDataFrame tbody tr:hover { background: rgba(0, 245, 255, 0.05) !important; }
+    .stDataFrame tbody td { color: #f8fafc !important; }
 
     .stProgress > div > div { background: #1e293b; }
     .stProgress > div > div > div { background: linear-gradient(90deg, #00f5ff, #b24bf3); }
@@ -265,23 +246,18 @@ st.markdown("""
 
     .welcome-container { text-align: center; padding: 2rem; max-width: 900px; margin: 0 auto; }
     .welcome-container h3 { font-family: 'Orbitron', monospace; color: #64748b; margin-bottom: 1rem; }
-    .welcome-container p { color: #475569; }
-
     .feature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1.5rem; }
     .feature-card { background: linear-gradient(145deg, #111827, #0f172a); border: 1px solid #1e293b; border-radius: 12px; padding: 1rem; text-align: left; }
     .feature-card h4 { font-family: 'Orbitron', monospace; color: #00f5ff; font-size: 0.9rem; margin-bottom: 0.5rem; }
-    .feature-card p { font-family: 'Rajdhani', sans-serif; color: #94a3b8; font-size: 0.85rem; line-height: 1.5; }
+    .feature-card p { font-family: 'Rajdhani', sans-serif; color: #94a3b8; font-size: 0.85rem; }
 
     .footer { text-align: center; padding: 1.5rem; margin-top: 1.5rem; border-top: 1px solid #1e293b; }
     .footer p { font-family: 'Rajdhani', sans-serif; color: #64748b; margin: 0.2rem 0; }
-    .footer .version { font-family: 'Orbitron', monospace; color: #00f5ff; font-size: 0.8rem; letter-spacing: 2px; }
+    .footer .version { font-family: 'Orbitron', monospace; color: #00f5ff; font-size: 0.8rem; }
 
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: #0a0e17; }
     ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #00f5ff, #b24bf3); border-radius: 4px; }
-
-    /* 隐藏 Streamlit 内部标签页 */
-    .stTabs { display: none; }
 </style>
 
 <div class="grid-bg"></div>
@@ -291,141 +267,116 @@ st.markdown("""
 st.markdown('<h1 class="main-title">QUANTSTOCK PRO</h1>', unsafe_allow_html=True)
 st.markdown('<p class="sub-title">AI-Powered Quantitative Trading Platform</p>', unsafe_allow_html=True)
 
-# 初始化模式
-if "current_mode" not in st.session_state:
-    st.session_state.current_mode = "backtest"
+# 创建标签页 - sidebar 放在外面
+tab1, tab2 = st.tabs(["⚡ STRATEGY BACKTEST", "🤖 AI ANALYSIS"])
 
-# ========== 模式切换按钮 ==========
-col1, col2, col3 = st.columns([1, 1, 1])
-with col1:
-    if st.button("⚡ STRATEGY BACKTEST", key="btn_mode_backtest", use_container_width=True):
-        st.session_state.current_mode = "backtest"
-        st.rerun()
-with col2:
-    if st.button("🤖 AI ANALYSIS", key="btn_mode_analyze", use_container_width=True):
-        st.session_state.current_mode = "analyze"
-        st.rerun()
-with col3:
-    st.empty()
-
-# 显示当前模式
-current_mode = st.session_state.current_mode
-if current_mode == "backtest":
-    st.markdown('<p style="text-align:center;color:#00f5ff;font-family:Orbitron;">⚡ BACKTEST MODE</p>', unsafe_allow_html=True)
-else:
-    st.markdown('<p style="text-align:center;color:#b24bf3;font-family:Orbitron;">🤖 AI ANALYSIS MODE</p>', unsafe_allow_html=True)
-
-st.markdown("---")
-
-# ========== 侧边栏配置 ==========
+# ========== 侧边栏配置 - 放在 tabs 外面 ==========
 with st.sidebar:
     st.markdown("## ⚙️ CONTROL PANEL")
     st.markdown("---")
 
-    if current_mode == "backtest":
-        st.markdown("### 📊 DATA INPUT")
-        st.markdown("<small style='color:#64748b'>A股: 600519 | 港股: 00700 | 美股: AAPL</small>", unsafe_allow_html=True)
+    # 使用查询参数判断当前 tab
+    # 默认显示回测配置
+    st.markdown("### 📊 DATA INPUT")
+    st.markdown("<small style='color:#64748b'>A股: 600519 | 港股: 00700 | 美股: AAPL</small>", unsafe_allow_html=True)
 
-        symbols_input = st.text_area(
-            "Stock Codes",
-            value="600519\n000858\n000333\n601318\n600036",
-            height=80,
-            key="backtest_symbols",
-            label_visibility="collapsed"
-        )
+    symbols_input = st.text_area(
+        "Stock Codes",
+        value="600519\n000858\n000333\n601318\n600036",
+        height=80,
+        key="backtest_symbols",
+        label_visibility="collapsed"
+    )
 
-        symbols = []
-        for line in symbols_input.split('\n'):
-            line = line.strip()
-            if ',' in line:
-                symbols.extend([s.strip() for s in line.split(',') if s.strip()])
-            elif line:
-                symbols.append(line)
+    symbols = []
+    for line in symbols_input.split('\n'):
+        line = line.strip()
+        if ',' in line:
+            symbols.extend([s.strip() for s in line.split(',') if s.strip()])
+        elif line:
+            symbols.append(line)
 
-        col1, col2 = st.columns(2)
-        with col1:
-            start_date = st.date_input("Start", value=datetime.now() - timedelta(days=365), key="backtest_start")
-        with col2:
-            end_date = st.date_input("End", value=datetime.now(), key="backtest_end")
+    col1, col2 = st.columns(2)
+    with col1:
+        start_date = st.date_input("Start", value=datetime.now() - timedelta(days=365), key="backtest_start")
+    with col2:
+        end_date = st.date_input("End", value=datetime.now(), key="backtest_end")
 
-        interval = st.selectbox("Frequency", options=["1d", "1wk", "1mo"], index=0, key="backtest_interval")
+    interval = st.selectbox("Frequency", options=["1d", "1wk", "1mo"], index=0, key="backtest_interval")
 
-        st.markdown("### 🎯 STRATEGY")
-        strategy_type = st.selectbox(
-            "Strategy",
-            options=["动量策略", "双动量策略", "均值回归策略", "多因子策略"],
-            index=0, key="backtest_strategy", label_visibility="collapsed"
-        )
+    st.markdown("### 🎯 STRATEGY")
+    strategy_type = st.selectbox(
+        "Strategy",
+        options=["动量策略", "双动量策略", "均值回归策略", "多因子策略"],
+        index=0, key="backtest_strategy", label_visibility="collapsed"
+    )
 
-        if strategy_type == "动量策略":
-            lookback = st.slider("Lookback", 5, 250, 20, key="bt_lookback")
-            holding = st.slider("Holding", 1, 60, 10, key="bt_holding")
-            top_n = st.slider("Top N", 1, 20, 5, key="bt_top_n")
-        elif strategy_type == "双动量策略":
-            abs_lookback = st.slider("Abs Momentum", 5, 100, 20, key="bt_abs_lookback")
-            rel_lookback = st.slider("Rel Momentum", 20, 250, 60, key="bt_rel_lookback")
-            top_n = st.slider("Top N", 1, 20, 5, key="bt_top_n2")
-        elif strategy_type == "均值回归策略":
-            lookback = st.slider("Lookback", 5, 250, 20, key="bt_lookback2")
-            zscore_threshold = st.slider("Z-Score", 1.0, 3.0, 2.0, 0.1, key="bt_zscore")
-        else:
-            top_n = st.slider("Top N", 1, 20, 5, key="bt_top_n3")
-            rebalance_freq = st.selectbox("Rebalance", ["每日", "每周", "每月"], index=2, key="bt_rebalance")
+    if strategy_type == "动量策略":
+        lookback = st.slider("Lookback", 5, 250, 20, key="bt_lookback")
+        holding = st.slider("Holding", 1, 60, 10, key="bt_holding")
+        top_n = st.slider("Top N", 1, 20, 5, key="bt_top_n")
+    elif strategy_type == "双动量策略":
+        abs_lookback = st.slider("Abs Momentum", 5, 100, 20, key="bt_abs_lookback")
+        rel_lookback = st.slider("Rel Momentum", 20, 250, 60, key="bt_rel_lookback")
+        top_n = st.slider("Top N", 1, 20, 5, key="bt_top_n2")
+    elif strategy_type == "均值回归策略":
+        lookback = st.slider("Lookback", 5, 250, 20, key="bt_lookback2")
+        zscore_threshold = st.slider("Z-Score", 1.0, 3.0, 2.0, 0.1, key="bt_zscore")
+    else:
+        top_n = st.slider("Top N", 1, 20, 5, key="bt_top_n3")
+        rebalance_freq = st.selectbox("Rebalance", ["每日", "每周", "每月"], index=2, key="bt_rebalance")
 
-        st.markdown("### 💰 CAPITAL")
-        initial_capital = st.number_input("Capital", min_value=10000, max_value=100000000, value=1000000, step=10000, key="bt_capital")
+    st.markdown("### 💰 CAPITAL")
+    initial_capital = st.number_input("Capital", min_value=10000, max_value=100000000, value=1000000, step=10000, key="bt_capital")
 
-        col1, col2 = st.columns(2)
-        with col1:
-            commission_rate = st.number_input("Commission%", min_value=0.0, max_value=1.0, value=0.03, step=0.01, key="bt_commission") / 100
-        with col2:
-            slippage_rate = st.number_input("Slippage%", min_value=0.0, max_value=1.0, value=0.01, step=0.01, key="bt_slippage") / 100
+    col1, col2 = st.columns(2)
+    with col1:
+        commission_rate = st.number_input("Commission%", min_value=0.0, max_value=1.0, value=0.03, step=0.01, key="bt_commission") / 100
+    with col2:
+        slippage_rate = st.number_input("Slippage%", min_value=0.0, max_value=1.0, value=0.01, step=0.01, key="bt_slippage") / 100
 
-        st.markdown("### 🔢 FACTORS")
-        factor_calculator = FactorCalculator()
-        technical_factors = factor_calculator.list_factors(FactorType.TECHNICAL)
-        default_technical = ["ma_20", "macd"]
-        rsi_factors = [f for f in technical_factors if f.startswith("rsi_")]
-        if rsi_factors:
-            default_technical.append(rsi_factors[0])
-        selected_technical = st.multiselect("Indicators", options=technical_factors, default=default_technical, key="bt_technical", label_visibility="collapsed")
+    st.markdown("### 🔢 FACTORS")
+    factor_calculator = FactorCalculator()
+    technical_factors = factor_calculator.list_factors(FactorType.TECHNICAL)
+    default_technical = ["ma_20", "macd"]
+    rsi_factors = [f for f in technical_factors if f.startswith("rsi_")]
+    if rsi_factors:
+        default_technical.append(rsi_factors[0])
+    selected_technical = st.multiselect("Indicators", options=technical_factors, default=default_technical, key="bt_technical", label_visibility="collapsed")
 
-        st.markdown("---")
-        run_backtest = st.button("🚀 EXECUTE BACKTEST", type="primary", use_container_width=True, key="btn_run_backtest")
+    st.markdown("---")
+    run_backtest = st.button("🚀 EXECUTE BACKTEST", type="primary", use_container_width=True, key="btn_backtest")
 
-    else:  # AI Analysis
-        st.markdown("### 📊 STOCKS")
-        analyze_symbols = st.text_input("Codes (comma sep.)", value="600519,000858,000333", key="analyze_symbols", label_visibility="collapsed")
-        analyze_stocks = [s.strip() for s in analyze_symbols.split(',') if s.strip()]
+    # AI 分析配置
+    st.markdown("---")
+    st.markdown("## 🤖 AI ANALYSIS")
+    st.markdown("---")
 
-        st.markdown("### 📅 DATE RANGE")
-        col1, col2 = st.columns(2)
-        with col1:
-            analyze_start = st.date_input("Start", value=datetime.now() - timedelta(days=180), key="analyze_start")
-        with col2:
-            analyze_end = st.date_input("End", value=datetime.now(), key="analyze_end")
+    analyze_symbols = st.text_input("Codes (comma)", value="600519,000858,000333", key="analyze_symbols", label_visibility="collapsed")
+    analyze_stocks = [s.strip() for s in analyze_symbols.split(',') if s.strip()]
 
-        st.markdown("### 🔧 OPTIONS")
-        enable_search = st.checkbox("Web Search", value=True, key="analyze_search")
-        enable_chip = st.checkbox("Chip Data", value=True, key="analyze_chip")
-        enable_realtime = st.checkbox("Real-time", value=True, key="analyze_realtime")
+    col1, col2 = st.columns(2)
+    with col1:
+        analyze_start = st.date_input("Start Date", value=datetime.now() - timedelta(days=180), key="analyze_start")
+    with col2:
+        analyze_end = st.date_input("End Date", value=datetime.now(), key="analyze_end")
 
-        st.markdown("### 📬 NOTIFY")
-        enable_notify = st.checkbox("Send Notifications", value=False, key="analyze_notify")
-        if enable_notify:
-            notify_channels = st.multiselect("Channels", options=["email", "wechat"], default=["email"], key="analyze_channels", label_visibility="collapsed")
-        else:
-            notify_channels = ["email"]
+    enable_search = st.checkbox("Web Search", value=True, key="analyze_search")
+    enable_chip = st.checkbox("Chip Data", value=True, key="analyze_chip")
+    enable_realtime = st.checkbox("Real-time", value=True, key="analyze_realtime")
 
-        st.markdown("---")
-        run_analyze = st.button("🤖 START AI ANALYSIS", type="primary", use_container_width=True, key="btn_run_analyze")
+    enable_notify = st.checkbox("Notify", value=False, key="analyze_notify")
+    if enable_notify:
+        notify_channels = st.multiselect("Channels", options=["email", "wechat"], default=["email"], key="analyze_channels", label_visibility="collapsed")
+    else:
+        notify_channels = ["email"]
+
+    st.markdown("---")
+    run_analyze = st.button("🤖 START AI ANALYSIS", type="primary", use_container_width=True, key="btn_analyze")
 
 
-# ========== 主内容区 ==========
-if current_mode == "backtest":
-    if 'run_backtest' not in dir():
-        run_backtest = st.session_state.get("btn_run_backtest", False)
-
+# ========== 标签页1: 策略回测 ==========
+with tab1:
     if run_backtest and symbols:
         try:
             progress_bar = st.progress(0)
@@ -501,8 +452,7 @@ if current_mode == "backtest":
                     st.markdown(f'<div class="metric-card"><div class="metric-label">SHARPE</div><div class="metric-value">{sharpe:.3f}</div></div>', unsafe_allow_html=True)
                 with col4:
                     max_dd = result.performance_metrics.get('最大回撤%', 0)
-                    dd_class = "negative" if max_dd < -20 else "positive"
-                    st.markdown(f'<div class="metric-card"><div class="metric-label">MAX DD</div><div class="metric-value {dd_class}">{max_dd:.2f}%</div></div>', unsafe_allow_html=True)
+                    st.markdown(f'<div class="metric-card"><div class="metric-label">MAX DD</div><div class="metric-value">{max_dd:.2f}%</div></div>', unsafe_allow_html=True)
 
                 st.markdown('<h3 class="section-header">📈 METRICS</h3>', unsafe_allow_html=True)
                 metrics_data = [
@@ -530,7 +480,7 @@ if current_mode == "backtest":
         st.markdown("""
         <div class="welcome-container">
             <h3>⚡ STRATEGY BACKTEST</h3>
-            <p>Configure parameters in the sidebar and click "EXECUTE BACKTEST"</p>
+            <p>Configure parameters in sidebar and click "EXECUTE BACKTEST"</p>
             <div class="feature-grid">
                 <div class="feature-card"><h4>📊 Multi-Source Data</h4><p>A-share, HK, US stocks</p></div>
                 <div class="feature-card"><h4>🎯 Strategies</h4><p>Momentum, Mean Reversion, Multi-Factor</p></div>
@@ -540,10 +490,9 @@ if current_mode == "backtest":
         </div>
         """, unsafe_allow_html=True)
 
-else:  # AI Analysis
-    if 'run_analyze' not in dir():
-        run_analyze = st.session_state.get("btn_run_analyze", False)
 
+# ========== 标签页2: AI智能分析 ==========
+with tab2:
     if run_analyze and analyze_stocks:
         try:
             progress_bar = st.progress(0)
@@ -648,10 +597,11 @@ else:  # AI Analysis
         </div>
         """, unsafe_allow_html=True)
 
+
 # 页脚
 st.markdown("""
 <div class="footer">
-    <p class="version">QUANTSTOCK PRO v2.3</p>
+    <p class="version">QUANTSTOCK PRO v2.4</p>
     <p>Strategy Backtest • AI Analysis</p>
 </div>
 """, unsafe_allow_html=True)
