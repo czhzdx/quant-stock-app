@@ -598,23 +598,29 @@ st.markdown("""
 st.markdown('<h1 class="main-title">QUANTSTOCK PRO</h1>', unsafe_allow_html=True)
 st.markdown('<p class="sub-title">AI-Powered Quantitative Trading Platform</p>', unsafe_allow_html=True)
 
+# 初始化session_state中的模式
+if "app_mode" not in st.session_state:
+    st.session_state.app_mode = "⚡ Strategy Backtest"
+
 # ========== 侧边栏配置 ==========
 with st.sidebar:
     st.markdown("## ⚙️ CONTROL PANEL")
 
     # 功能模式选择 - 使用Radio更清晰
-    mode = st.radio(
+    selected_mode = st.radio(
         "SELECT MODE",
         options=["⚡ Strategy Backtest", "🤖 AI Analysis"],
-        index=0,
-        key="app_mode",
+        index=0 if st.session_state.app_mode == "⚡ Strategy Backtest" else 1,
+        key="app_mode_radio",
         label_visibility="collapsed"
     )
+    # 同步到session_state
+    st.session_state.app_mode = selected_mode
 
     st.markdown("---")
 
     # 根据模式显示不同配置
-    if mode == "⚡ Strategy Backtest":
+    if st.session_state.app_mode == "⚡ Strategy Backtest":
         st.markdown("### 📊 DATA INPUT")
         st.markdown("<small style='color:#64748b'>A股: 600519 | 港股: 00700 | 美股: AAPL</small>", unsafe_allow_html=True)
 
@@ -714,18 +720,17 @@ with st.sidebar:
 
 
 # ========== 模式指示器 ==========
-mode_class_active = "active-backtest" if mode == "⚡ Strategy Backtest" else "active-analysis"
-mode_class_inactive = "inactive"
+current_mode = st.session_state.app_mode
 st.markdown(f"""
 <div class="mode-indicator">
-    <span class="mode-badge {'active-backtest' if mode == '⚡ Strategy Backtest' else 'inactive'}">⚡ BACKTEST</span>
-    <span class="mode-badge {'active-analysis' if mode == '🤖 AI Analysis' else 'inactive'}">🤖 AI ANALYSIS</span>
+    <span class="mode-badge {'active-backtest' if current_mode == '⚡ Strategy Backtest' else 'inactive'}">⚡ BACKTEST</span>
+    <span class="mode-badge {'active-analysis' if current_mode == '🤖 AI Analysis' else 'inactive'}">🤖 AI ANALYSIS</span>
 </div>
 """, unsafe_allow_html=True)
 
 
 # ========== 主内容区 ==========
-if mode == "⚡ Strategy Backtest":
+if current_mode == "⚡ Strategy Backtest":
     if run_backtest and symbols:
         try:
             progress_bar = st.progress(0)
