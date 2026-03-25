@@ -329,23 +329,7 @@ class DataFetcher:
 
         except Exception as e:
             logger.error(f"获取美股数据失败 {symbol}: {e}")
-            # 如果Akshare美股接口失败，尝试使用yfinance
-            try:
-                import yfinance as yf
-                ticker = yf.Ticker(symbol)
-                df = ticker.history(
-                    start=start_date,
-                    end=end_date + timedelta(days=1),
-                    interval=interval,
-                    auto_adjust=True
-                )
-                if df.empty:
-                    return None
-                df.columns = [col.capitalize() for col in df.columns]
-                return df[["Open", "High", "Low", "Close", "Volume"]].sort_index()
-            except Exception as e2:
-                logger.error(f"yfinance也失败: {e2}")
-                return None
+            return None
 
     def get_multiple_stocks(
         self,
