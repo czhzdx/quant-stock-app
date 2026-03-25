@@ -582,23 +582,15 @@ st.markdown("""
 st.markdown('<h1 class="main-title">QUANTSTOCK PRO</h1>', unsafe_allow_html=True)
 st.markdown('<p class="sub-title">AI-Powered Quantitative Trading Platform</p>', unsafe_allow_html=True)
 
-# 初始化session_state中的模式
-if "app_mode" not in st.session_state:
-    st.session_state.app_mode = "⚡ Strategy Backtest"
-
 # ========== 模式选择器（主内容区，始终可见） ==========
-def on_mode_change():
-    st.session_state.app_mode = st.session_state.mode_selector
-
 st.markdown('<div class="mode-selector-container">', unsafe_allow_html=True)
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
-    st.selectbox(
+    current_mode = st.selectbox(
         "SELECT MODE",
         options=["⚡ Strategy Backtest", "🤖 AI Analysis"],
-        index=0 if st.session_state.app_mode == "⚡ Strategy Backtest" else 1,
+        index=0,
         key="mode_selector",
-        on_change=on_mode_change,
         label_visibility="collapsed"
     )
 st.markdown('</div>', unsafe_allow_html=True)
@@ -609,7 +601,7 @@ with st.sidebar:
     st.markdown("---")
 
     # 根据模式显示不同配置
-    if st.session_state.app_mode == "⚡ Strategy Backtest":
+    if current_mode == "⚡ Strategy Backtest":
         st.markdown("### 📊 DATA INPUT")
         st.markdown("<small style='color:#64748b'>A股: 600519 | 港股: 00700 | 美股: AAPL</small>", unsafe_allow_html=True)
 
@@ -709,7 +701,8 @@ with st.sidebar:
 
 
 # ========== 主内容区 ==========
-current_mode = st.session_state.app_mode
+# 从 selectbox 获取当前模式
+current_mode = st.session_state.mode_selector
 
 if current_mode == "⚡ Strategy Backtest":
     if run_backtest and symbols:
