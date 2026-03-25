@@ -1,0 +1,175 @@
+# 量化选股软件配置文件
+
+# 数据源配置
+data_sources:
+  yahoo_finance:
+    enabled: true
+    timeout: 30
+    retry_count: 3
+    cache_days: 7
+
+  tushare:
+    enabled: false
+    token: ""
+
+  akshare:
+    enabled: false
+
+# 股票池配置
+stock_pool:
+  # A股主要指数成分股
+  csi300: true
+  csi500: true
+  csi1000: false
+
+  # 美股主要指数
+  sp500: false
+  nasdaq100: false
+
+  # 港股
+  hsi: false
+
+  # 自定义股票列表
+  custom_stocks: []
+
+# 数据频率
+data_frequency:
+  daily: true
+  weekly: false
+  monthly: false
+  intraday: false
+
+# 因子配置
+factors:
+  # 技术指标
+  technical:
+    ma: [5, 10, 20, 60, 120, 250]
+    macd: true
+    rsi: [6, 12, 24]
+    bollinger: true
+    kdj: false
+    obv: true
+
+  # 基本面因子
+  fundamental:
+    pe: true
+    pb: true
+    roe: true
+    revenue_growth: true
+    profit_growth: true
+
+  # 量价因子
+  volume_price:
+    volume_ratio: true
+    turnover_rate: true
+    money_flow: true
+
+  # 市场因子
+  market:
+    beta: true
+    volatility: true
+    correlation: true
+
+# 策略配置
+strategies:
+  momentum:
+    enabled: true
+    lookback_period: 20
+    holding_period: 10
+
+  mean_reversion:
+    enabled: true
+    lookback_period: 20
+    zscore_threshold: 2.0
+
+  multi_factor:
+    enabled: true
+    factors: ["pe", "pb", "roe", "rsi", "volume_ratio"]
+    weights: [0.2, 0.2, 0.2, 0.2, 0.2]
+
+  machine_learning:
+    enabled: false
+    model: "xgboost"
+    features: ["ma_5", "ma_20", "rsi", "volume_ratio", "pe"]
+
+# 回测配置
+backtest:
+  initial_capital: 1000000
+  commission_rate: 0.0003
+  slippage_rate: 0.0001
+  benchmark: "000300.SH"  # 沪深300
+
+  # 风险控制
+  risk_management:
+    stop_loss: -0.08
+    take_profit: 0.15
+    max_position_size: 0.1
+    max_portfolio_risk: 0.02
+
+# 可视化配置
+visualization:
+  theme: "plotly_white"
+  color_scheme: "viridis"
+  figure_size: [1200, 800]
+
+  # 图表类型
+  charts:
+    equity_curve: true
+    drawdown: true
+    monthly_returns: true
+    rolling_sharpe: true
+    positions: true
+
+# 数据库配置
+database:
+  type: "sqlite"
+  path: "./data/quant_stock.db"
+
+  # 可选: MySQL/PostgreSQL配置
+  mysql:
+    host: "localhost"
+    port: 3306
+    database: "quant_stock"
+    username: ""
+    password: ""
+
+# 日志配置
+logging:
+  level: "INFO"
+  file: "./logs/quant_stock.log"
+  max_size_mb: 100
+  backup_count: 5
+
+# 缓存配置
+cache:
+  enabled: true
+  ttl_days: 7
+  path: "./data/cache"
+
+# 性能优化
+performance:
+  parallel_processing: true
+  max_workers: 4
+  use_gpu: false
+  batch_size: 1000
+
+# 邮件通知
+notifications:
+  email:
+    enabled: false
+    smtp_server: ""
+    smtp_port: 587
+    sender: ""
+    password: ""
+    recipients: []
+
+  # 微信/钉钉通知
+  wechat: false
+  dingtalk: false
+
+# API配置
+api:
+  enabled: false
+  host: "0.0.0.0"
+  port: 8000
+  auth_required: true
