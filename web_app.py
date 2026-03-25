@@ -1,4 +1,12 @@
 """量化选股软件Web界面"""
+import sys
+from pathlib import Path
+
+# 确保项目根目录在 Python 路径中
+root_dir = Path(__file__).parent
+if str(root_dir) not in sys.path:
+    sys.path.insert(0, str(root_dir))
+
 import streamlit as st
 import pandas as pd
 import numpy as np
