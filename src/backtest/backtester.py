@@ -104,6 +104,11 @@ class Backtester:
         if prepared_data is None:
             raise ValueError("数据准备失败")
 
+        # 记录原始数据范围
+        original_start = prepared_data.index.min() if len(prepared_data) > 0 else None
+        original_end = prepared_data.index.max() if len(prepared_data) > 0 else None
+        logger.info(f"原始数据范围: {original_start} 到 {original_end}, 共 {len(prepared_data)} 条")
+
         # 过滤日期范围
         if start_date:
             start_date = pd.to_datetime(start_date)
@@ -113,7 +118,12 @@ class Backtester:
             prepared_data = prepared_data[prepared_data.index <= end_date]
 
         if prepared_data.empty:
-            raise ValueError("过滤后的数据为空")
+            # 提供更详细的错误信息
+            error_msg = f"过滤后的数据为空。原始数据范围: {original_start} 到 {original_end}"
+            if start_date or end_date:
+                error_msg += f", 请求范围: {start_date or '无限制'} 到 {end_date or '无限制'}"
+            error_msg += "。请检查日期范围是否在数据覆盖范围内。"
+            raise ValueError(error_msg)
 
         logger.info(f"回测日期范围: {prepared_data.index[0]} 到 {prepared_data.index[-1]}")
         logger.info(f"数据条数: {len(prepared_data)}")

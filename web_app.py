@@ -386,6 +386,8 @@ with tab1:
             fetcher = DataFetcher(cache_enabled=True)
 
             stock_data = {}
+            data_info = []  # 用于记录数据信息
+
             for i, symbol in enumerate(symbols):
                 try:
                     data = fetcher.get_stock_data(
@@ -396,47 +398,60 @@ with tab1:
                     )
                     if data is not None and not data.empty:
                         stock_data[symbol] = data
-                        st.success(f"✓ {symbol} ({len(data)} records)")
+                        data_start = data.index.min().strftime("%Y-%m-%d")
+                        data_end = data.index.max().strftime("%Y-%m-%d")
+                        st.success(f"✓ {symbol}: {len(data)} records ({data_start} ~ {data_end})")
+                        data_info.append(f"{symbol}: {data_start} ~ {data_end}")
+                    else:
+                        st.warning(f"⚠ {symbol}: No data returned")
                 except Exception as e:
                     st.error(f"✗ {symbol}: {str(e)}")
                 progress_bar.progress((i + 1) / len(symbols) * 0.3)
 
             if not stock_data:
-                st.error("No data retrieved")
+                st.error("❌ No data retrieved. Please check:\n1. Stock codes are correct\n2. Date range is valid\n3. Network connection is available")
+                st.stop()
             else:
-                status_text.markdown("<p style='color:#00f5ff'>🔢 Computing factors...</p>", unsafe_allow_html=True)
-                calculator = FactorCalculator()
-                selected_factors = selected_technical
+                st.info(f"📊 Successfully fetched {len(stock_data)} stocks")
 
-                status_text.markdown("<p style='color:#00f5ff'>🎯 Building strategy...</p>", unsafe_allow_html=True)
-                if strategy_type == "动量策略":
-                    strategy = MomentumStrategy(lookback_period=lookback, holding_period=holding, top_n=top_n)
-                elif strategy_type == "双动量策略":
-                    strategy = DualMomentumStrategy(absolute_lookback=abs_lookback, relative_lookback=rel_lookback, top_n=top_n)
-                elif strategy_type == "均值回归策略":
-                    strategy = MeanReversionStrategy(lookback_period=lookback, zscore_threshold=zscore_threshold)
-                else:
-                    freq_map = {"每日": "D", "每周": "W", "每月": "M"}
-                    strategy = MultiFactorStrategy(
-                        factors=selected_factors,
-                        weights=[1.0/len(selected_factors)] * len(selected_factors) if selected_factors else [],
-                        top_n=top_n, rebalance_freq=freq_map[rebalance_freq]
-                    )
+            progress_bar.progress(0.4)
+            status_text.markdown("<p style='color:#00f5ff'>🎯 Building strategy...</p>", unsafe_allow_html=True)
 
-                if strategy_type in ["动量策略", "双动量策略"]:
-                    backtest_data = pd.DataFrame({s: d['Close'] for s, d in stock_data.items()})
-                    mode_bt = BacktestMode.MULTI_STOCK
-                else:
-                    first_symbol = list(stock_data.keys())[0]
-                    backtest_data = stock_data[first_symbol]
-                    mode_bt = BacktestMode.SINGLE_STOCK
+            if strategy_type == "动量策略":
+                strategy = MomentumStrategy(lookback_period=lookback, holding_period=holding, top_n=top_n)
+            elif strategy_type == "双动量策略":
+                strategy = DualMomentumStrategy(absolute_lookback=abs_lookback, relative_lookback=rel_lookback, top_n=top_n)
+            elif strategy_type == "均值回归策略":
+                strategy = MeanReversionStrategy(lookback_period=lookback, zscore_threshold=zscore_threshold)
+            else:
+                freq_map = {"每日": "D", "每周": "W", "每月": "M"}
+                selected_factors = selected_technical if selected_technical else ["ma_20"]
+                strategy = MultiFactorStrategy(
+                    factors=selected_factors,
+                    weights=[1.0/len(selected_factors)] * len(selected_factors),
+                    top_n=top_n, rebalance_freq=freq_map[rebalance_freq]
+                )
 
-                status_text.markdown("<p style='color:#00f5ff'>⚡ Running backtest...</p>", unsafe_allow_html=True)
-                backtester = Backtester(strategy=strategy, initial_capital=initial_capital, commission_rate=commission_rate, slippage_rate=slippage_rate)
-                result = backtester.run(data=backtest_data, start_date=start_date.strftime("%Y-%m-%d"), end_date=end_date.strftime("%Y-%m-%d"), mode=mode_bt)
+            progress_bar.progress(0.5)
 
-                progress_bar.empty()
-                status_text.empty()
+            if strategy_type in ["动量策略", "双动量策略"]:
+                backtest_data = pd.DataFrame({s: d['Close'] for s, d in stock_data.items()})
+                mode_bt = BacktestMode.MULTI_STOCK
+                st.info(f"📈 Multi-stock mode: {len(backtest_data.columns)} stocks, {len(backtest_data)} trading days")
+            else:
+                first_symbol = list(stock_data.keys())[0]
+                backtest_data = stock_data[first_symbol]
+                mode_bt = BacktestMode.SINGLE_STOCK
+                st.info(f"📈 Single-stock mode: {first_symbol}, {len(backtest_data)} trading days")
+
+            progress_bar.progress(0.6)
+            status_text.markdown("<p style='color:#00f5ff'>⚡ Running backtest...</p>", unsafe_allow_html=True)
+
+            backtester = Backtester(strategy=strategy, initial_capital=initial_capital, commission_rate=commission_rate, slippage_rate=slippage_rate)
+            result = backtester.run(data=backtest_data, start_date=start_date.strftime("%Y-%m-%d"), end_date=end_date.strftime("%Y-%m-%d"), mode=mode_bt)
+
+            progress_bar.empty()
+            status_text.empty()
 
                 st.markdown('<h2 class="section-header">📊 PERFORMANCE</h2>', unsafe_allow_html=True)
 
