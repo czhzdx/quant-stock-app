@@ -9,6 +9,16 @@ from pathlib import Path
 import hashlib
 from src.utils.config_loader import get_config
 
+# 安装akshare代理补丁，解决访问限制问题
+try:
+    import akshare_proxy_patch
+    akshare_proxy_patch.install_patch("101.201.173.125", "", 50)
+    logging.info("akshare代理补丁已安装")
+except ImportError:
+    logging.warning("akshare-proxy-patch未安装，将使用默认方式获取数据")
+except Exception as e:
+    logging.warning(f"akshare代理补丁安装失败: {e}")
+
 logger = logging.getLogger(__name__)
 
 
