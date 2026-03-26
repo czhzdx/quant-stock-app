@@ -453,38 +453,38 @@ with tab1:
             progress_bar.empty()
             status_text.empty()
 
-                st.markdown('<h2 class="section-header">📊 PERFORMANCE</h2>', unsafe_allow_html=True)
+            st.markdown('<h2 class="section-header">📊 PERFORMANCE</h2>', unsafe_allow_html=True)
 
-                col1, col2, col3, col4 = st.columns(4)
-                with col1:
-                    total_return = result.performance_metrics.get('总收益率%', 0)
-                    return_class = "positive" if total_return > 0 else "negative"
-                    st.markdown(f'<div class="metric-card"><div class="metric-label">TOTAL RETURN</div><div class="metric-value {return_class}">{total_return:.2f}%</div></div>', unsafe_allow_html=True)
-                with col2:
-                    st.markdown(f'<div class="metric-card"><div class="metric-label">ANNUAL</div><div class="metric-value">{result.performance_metrics.get("年化收益率%", 0):.2f}%</div></div>', unsafe_allow_html=True)
-                with col3:
-                    sharpe = result.performance_metrics.get('夏普比率', 0)
-                    st.markdown(f'<div class="metric-card"><div class="metric-label">SHARPE</div><div class="metric-value">{sharpe:.3f}</div></div>', unsafe_allow_html=True)
-                with col4:
-                    max_dd = result.performance_metrics.get('最大回撤%', 0)
-                    st.markdown(f'<div class="metric-card"><div class="metric-label">MAX DD</div><div class="metric-value">{max_dd:.2f}%</div></div>', unsafe_allow_html=True)
+            col1, col2, col3, col4 = st.columns(4)
+            with col1:
+                total_return = result.performance_metrics.get('总收益率%', 0)
+                return_class = "positive" if total_return > 0 else "negative"
+                st.markdown(f'<div class="metric-card"><div class="metric-label">TOTAL RETURN</div><div class="metric-value {return_class}">{total_return:.2f}%</div></div>', unsafe_allow_html=True)
+            with col2:
+                st.markdown(f'<div class="metric-card"><div class="metric-label">ANNUAL</div><div class="metric-value">{result.performance_metrics.get("年化收益率%", 0):.2f}%</div></div>', unsafe_allow_html=True)
+            with col3:
+                sharpe = result.performance_metrics.get('夏普比率', 0)
+                st.markdown(f'<div class="metric-card"><div class="metric-label">SHARPE</div><div class="metric-value">{sharpe:.3f}</div></div>', unsafe_allow_html=True)
+            with col4:
+                max_dd = result.performance_metrics.get('最大回撤%', 0)
+                st.markdown(f'<div class="metric-card"><div class="metric-label">MAX DD</div><div class="metric-value">{max_dd:.2f}%</div></div>', unsafe_allow_html=True)
 
-                st.markdown('<h3 class="section-header">📈 METRICS</h3>', unsafe_allow_html=True)
-                metrics_data = [
-                    ["INITIAL", f"¥{result.performance_metrics.get('初始资金', 0):,.0f}"],
-                    ["FINAL", f"¥{result.performance_metrics.get('最终权益', 0):,.0f}"],
-                    ["WIN RATE", f"{result.performance_metrics.get('胜率%', 0):.2f}%"],
-                    ["TRADES", f"{result.performance_metrics.get('总交易次数', 0)}"],
-                ]
-                st.dataframe(pd.DataFrame(metrics_data, columns=["METRIC", "VALUE"]), use_container_width=True, hide_index=True)
+            st.markdown('<h3 class="section-header">📈 METRICS</h3>', unsafe_allow_html=True)
+            metrics_data = [
+                ["INITIAL", f"¥{result.performance_metrics.get('初始资金', 0):,.0f}"],
+                ["FINAL", f"¥{result.performance_metrics.get('最终权益', 0):,.0f}"],
+                ["WIN RATE", f"{result.performance_metrics.get('胜率%', 0):.2f}%"],
+                ["TRADES", f"{result.performance_metrics.get('总交易次数', 0)}"],
+            ]
+            st.dataframe(pd.DataFrame(metrics_data, columns=["METRIC", "VALUE"]), use_container_width=True, hide_index=True)
 
-                st.markdown('<h3 class="section-header">📊 CHARTS</h3>', unsafe_allow_html=True)
-                plotter = Plotter()
-                fig1 = plotter.plot_equity_curve(result.equity_curve, result.benchmark_returns, title="EQUITY CURVE", show=False)
-                fig1.update_layout(paper_bgcolor='#111827', plot_bgcolor='#111827', font_color='#94a3b8')
-                st.plotly_chart(fig1, use_container_width=True)
+            st.markdown('<h3 class="section-header">📊 CHARTS</h3>', unsafe_allow_html=True)
+            plotter = Plotter()
+            fig1 = plotter.plot_equity_curve(result.equity_curve, result.benchmark_returns, title="EQUITY CURVE", show=False)
+            fig1.update_layout(paper_bgcolor='#111827', plot_bgcolor='#111827', font_color='#94a3b8')
+            st.plotly_chart(fig1, use_container_width=True)
 
-                st.success("✓ BACKTEST COMPLETE")
+            st.success("✓ BACKTEST COMPLETE")
 
         except Exception as e:
             st.error(f"✗ Error: {str(e)}")
